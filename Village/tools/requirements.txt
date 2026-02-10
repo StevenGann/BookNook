@@ -1,0 +1,2 @@
+# For image_sequence_to_bitmap.py
+Pillow>=9.0.0
