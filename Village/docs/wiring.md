@@ -96,7 +96,7 @@ Config names: `SPI_SCK`, `SPI_MOSI`, `LCD_CS`, `LCD_DC`, `LCD_RST`, `LCD_BL`. Ma
 - **GND:** Connect both GND pins on the MP3 module to common ground.
 - **Power:** 3.2–5 V. If using 5 V supply, level-shift UART lines if needed (module is often 5 V tolerant).
 - **Optional:** 1K resistor in series on TX/RX lines if you hear buzzing.
-- **SD card:** FAT16/FAT32, up to 32 GB. Create `mp3/` for 0001.mp3 … or folders `01/`, `02/`, … for folder playback.
+- **SD card:** FAT16 or FAT32, max 32 GB. Use FAT32 for cards >2 GB; exFAT not supported. Audio: MP3, WAV, WMA. Create `mp3/` for 0001.mp3 … or folders `01/`, `02/`, … for folder playback. See [mp3_player.md](mp3_player.md) for format and layout details.
 - **Ambient clips:** Put ambient sounds in `mp3/` as `0001.mp3`, `0002.mp3`, … (or at SD root). `random_all()` plays all files the module sees in random order. For predictable behavior, use a dedicated SD or only ambient files.
 
 ---

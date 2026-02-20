@@ -16,11 +16,9 @@ Config (in config.py):
     MP3_BAUD: 9600
     MP3_CMD_DELAY_MS: Minimum ms between commands (default 120)
 
-SD card layout:
-    - Root: files playable by global index (1–N, copy order)
-    - mp3/ or MP3/: 0001.mp3, 0002.mp3, … (play_mp3_folder)
-    - 01/, 02/, …: folder playback (play_folder, loop_folder)
-    - ADVERT/: advertising mode (play_advertise) – interrupts main track
+SD card: FAT16 or FAT32, max 32 GB. Use FAT32 for cards >2 GB.
+Audio formats: MP3, WAV, WMA (sampling rates 8–48 kHz).
+Layout: Root (global index); mp3/ (0001.mp3 …); 01/, 02/, …; ADVERT/.
 
 See Village/docs/mp3_player.md for full usage guide.
 """

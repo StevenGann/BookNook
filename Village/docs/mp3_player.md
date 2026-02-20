@@ -60,6 +60,35 @@ Always call `init()` before any other `dfplayer` function. The module needs ~500
 
 ---
 
+## SD Card Format and Capacity
+
+| Spec | Supported |
+|------|-----------|
+| **File system** | FAT16, FAT32 |
+| **Max capacity** | 32 GB |
+| **exFAT (SDXC >32 GB)** | Not supported |
+
+- Use **FAT32** for cards larger than 2 GB.
+- Cards above 32 GB (SDXC) are typically exFAT and will not work.
+- On Windows: right-click → Format → FAT32. For cards >32 GB, use a tool such as Rufus or SD Formatter to force FAT32 if needed.
+- On macOS: avoid hidden files (`.DS_Store`, `._*`); run `dot_clean /Volumes/YourSDVolume` after copying files.
+
+---
+
+## Supported Audio Formats
+
+| Format | Supported |
+|--------|-----------|
+| **MP3** | Yes |
+| **WAV** | Yes |
+| **WMA** | Yes |
+
+- **Sampling rates:** 8, 11.025, 12, 16, 22.05, 24, 32, 44.1, 48 kHz
+- **DAC:** 24-bit output, ~90 dB dynamic range, ~85 dB SNR
+- MP3 is the most widely tested format; use it for best compatibility.
+
+---
+
 ## SD Card Layout
 
 ### Root folder
