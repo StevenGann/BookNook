@@ -13,10 +13,13 @@ This page lists **which GPIO pin on each MCU** connects to what. Use the same nu
 | **GP5** | I2C SCL (master) | I2C bus SCL → **RP2350-Zero GP5** on every Zero; add 2.2–4.7 kΩ pull-up to 3.3 V |
 | **3V3** | 3.3 V | Shared 3.3 V rail (optional for Zeros if USB-powered) |
 | **GND** | Ground | Common GND with all RP2350-Zero and I2C bus |
+| **GP8** | UART1 TX (MP3) | MP3-TF-16P RX |
+| **GP9** | UART1 RX (MP3) | MP3-TF-16P TX |
+| **GP10** | Button | Momentary switch (other side → GND) |
 
 **Do not use:** GP23, GP24, GP25 (onboard WiFi).
 
-Config: `firmware/pico_w/config.py` — `LED_DATA_PIN`, `I2C_SDA_PIN`, `I2C_SCL_PIN`.
+Config: `firmware/pico_w/config.py` — `LED_DATA_PIN`, `I2C_SDA_PIN`, `I2C_SCL_PIN`, `MP3_TX_PIN`, `MP3_RX_PIN`, `BUTTON_PIN`.
 
 ---
 
@@ -60,6 +63,11 @@ Config names: `SPI_SCK`, `SPI_MOSI`, `LCD_CS`, `LCD_DC`, `LCD_RST`, `LCD_BL`. Ma
 | Pico W **GP4** | All RP2350-Zero **GP4** (SDA) + pull-up to 3.3 V |
 | Pico W **GP5** | All RP2350-Zero **GP5** (SCL) + pull-up to 3.3 V |
 | Pico W **GND** | All RP2350-Zero **GND** |
+| Pico W **GP8** | MP3-TF-16P RX (optional 1K series if buzzing) |
+| Pico W **GP9** | MP3-TF-16P TX |
+| Pico W **GND** | MP3-TF-16P GND (use both GND pins on module) |
+| Pico W **GP10** | Button one leg |
+| Button other leg | GND |
 | Each Zero **GP2** | That Zero’s ST7789V SCK |
 | Each Zero **GP3** | That Zero’s ST7789V MOSI |
 | Each Zero **GP9** | That Zero’s ST7789V CS |
@@ -71,6 +79,25 @@ Config names: `SPI_SCK`, `SPI_MOSI`, `LCD_CS`, `LCD_DC`, `LCD_RST`, `LCD_BL`. Ma
 
 - **Data:** From Pico W **GP0**. If the strip is 5 V logic, use a level shifter (e.g. 74AHCT125) on the data line.
 - **Power:** Use a separate 5 V supply for the strip; do not source high current from the Pico W.
+
+---
+
+## Button (ambient sound trigger)
+
+- **Pico W GP10** → one leg of momentary switch; other leg → **GND**
+- Use internal pull-up: pressed = low, released = high
+- Config: `config.BUTTON_PIN`
+
+---
+
+## MP3-TF-16P v3.0 / DFPlayer Mini
+
+- **UART:** 9600 baud, 8N1. Pico W **GP8** (TX) → MP3 **RX**, Pico W **GP9** (RX) → MP3 **TX**.
+- **GND:** Connect both GND pins on the MP3 module to common ground.
+- **Power:** 3.2–5 V. If using 5 V supply, level-shift UART lines if needed (module is often 5 V tolerant).
+- **Optional:** 1K resistor in series on TX/RX lines if you hear buzzing.
+- **SD card:** FAT16/FAT32, up to 32 GB. Create `mp3/` for 0001.mp3 … or folders `01/`, `02/`, … for folder playback.
+- **Ambient clips:** Put ambient sounds in `mp3/` as `0001.mp3`, `0002.mp3`, … (or at SD root). `random_all()` plays all files the module sees in random order. For predictable behavior, use a dedicated SD or only ambient files.
 
 ---
 

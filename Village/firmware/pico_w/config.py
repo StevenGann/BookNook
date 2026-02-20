@@ -60,3 +60,24 @@ LED_HSV_CONFIG = [
     (20, 250, 128, 2, 10, 30),   # LED 18
     (15, 250, 128, 2, 10, 45),  # LED 19
 ]
+
+# ----- Button (ambient sound trigger) -----
+BUTTON_PIN = 10   # Momentary switch; typically active-low with internal pull-up
+BUTTON_DEBOUNCE_MS = 50
+# Avoid: GP0, GP4, GP5, GP8, GP9, GP23–25 (LED, I2C, MP3 UART, WiFi)
+
+# Ambient audio behavior (button-triggered)
+AMBIENT_TIMEOUT_SEC = 10
+AMBIENT_FADE_IN_MS = 500
+AMBIENT_FADE_OUT_MS = 500
+AMBIENT_VOLUME = 20   # 0–30
+
+# ----- MP3-TF-16P v3.0 / DFPlayer Mini -----
+# UART1: Pico W TX → MP3 RX, Pico W RX → MP3 TX. Avoid GP0, GP4, GP5, GP23–25.
+MP3_TX_PIN = 8   # Pico W UART1 TX → MP3 module RX
+MP3_RX_PIN = 9   # Pico W UART1 RX ← MP3 module TX
+MP3_BAUD = 9600
+# Minimum ms between commands (MP3-TF-16P v3.0 needs ~100 ms; DFPlayer Mini tolerates less)
+MP3_CMD_DELAY_MS = 120
+# Default volume 0–30
+MP3_DEFAULT_VOLUME = 20
