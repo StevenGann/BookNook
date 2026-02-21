@@ -256,6 +256,6 @@ Internal helpers (for reference): `_hsv_to_rgb`, `_rand_unit`, `_rand_diff`, `_g
 
 ## File and config reference
 
-- **Firmware:** `Village/firmware/pico_w/leds.py`
-- **Config:** `Village/firmware/pico_w/config.py` (`LED_*`, `LED_HSV_CONFIG`)
+- **Firmware:** `Village/firmware/leds.py`
+- **Config:** `Village/firmware/config.py` (`LED_*`, `LED_HSV_CONFIG`)
 - **Driver:** `neopixel.py` (e.g. pi_pico_neopixel) with `transfer_mode="PUT_CRITICAL"` to avoid glitches during `show()`.

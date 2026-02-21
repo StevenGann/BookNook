@@ -4,6 +4,6 @@ Book nook diorama projects: narrow scenes with LEDs and small displays, controll
 
 ## Projects
 
-- **[village](village/)** – Tudor-style alley: SK6812 window LEDs (lamp/fireplace), ST7789V LCD “shadow” animations, Pico W + RP2350-Zero, configurable LCD count.
+- **[village](village/)** – Tudor-style alley: SK6812 window LEDs (lamp/fireplace), ambient sound, Pico W.
 
 Each project has its own `README`, `firmware/`, and `docs/` under its folder.

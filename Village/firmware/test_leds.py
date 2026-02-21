@@ -1,4 +1,4 @@
-# Village – Pico W LED test only (no WiFi, MQTT, I2C)
+# Village – Pico W LED test only (no WiFi, MQTT)
 # Run from REPL: exec(open('test_leds.py').read())
 # Or upload as main.py and reset the board to auto-run.
 

@@ -12,16 +12,6 @@ MQTT_USER = None  # set to ("user", "pass") if needed
 MQTT_CLIENT_ID = "booknook_village"
 MQTT_TOPIC_PREFIX = "booknook/village"
 
-# ----- LCD controllers (I2C) -----
-# List of I2C slave addresses for each RP2350-Zero, in index order.
-# LCD index 0 = first address, index 1 = second, etc. Add/remove addresses to change LCD count.
-LCD_I2C_ADDRESSES = [0x20, 0x21, 0x22]
-
-# I2C bus pins on Pico W (avoid GP23–25: used by CYW43)
-I2C_SDA_PIN = 4
-I2C_SCL_PIN = 5
-I2C_FREQ = 100_000
-
 # ----- SK6812 RGBW LEDs -----
 LED_DATA_PIN = 0
 LED_COUNT = 20  # number of SK6812 LEDs in the strip
@@ -64,7 +54,7 @@ LED_HSV_CONFIG = [
 # ----- Button (ambient sound trigger) -----
 BUTTON_PIN = 10   # Momentary switch; typically active-low with internal pull-up
 BUTTON_DEBOUNCE_MS = 50
-# Avoid: GP0, GP4, GP5, GP8, GP9, GP23–25 (LED, I2C, MP3 UART, WiFi)
+# Avoid: GP0, GP8, GP9, GP23–25 (LED, MP3 UART, WiFi)
 
 # Ambient audio behavior (button-triggered)
 AMBIENT_TRACK_COUNT = 7   # number of tracks at SD root (for random selection; random_all does not work on MP3-TF-16P)
@@ -74,7 +64,7 @@ AMBIENT_FADE_OUT_MS = 500
 AMBIENT_VOLUME = 30   # 0–30
 
 # ----- MP3-TF-16P v3.0 / DFPlayer Mini -----
-# UART1: Pico W TX → MP3 RX, Pico W RX → MP3 TX. Avoid GP0, GP4, GP5, GP23–25.
+# UART1: Pico W TX → MP3 RX, Pico W RX → MP3 TX. Avoid GP0, GP23–25.
 MP3_TX_PIN = 8   # Pico W UART1 TX → MP3 module RX
 MP3_RX_PIN = 9   # Pico W UART1 RX ← MP3 module TX
 MP3_BAUD = 9600

@@ -62,7 +62,7 @@ See [wiring.md](wiring.md) for full pin assignments.
 
 ## Configuration
 
-Edit `firmware/pico_w/config.py`:
+Edit `firmware/config.py`:
 
 ```python
 MP3_TX_PIN = 8    # Pico W UART1 TX → MP3 RX
@@ -219,7 +219,7 @@ The Village firmware uses `dfplayer` from the `ambient` module for button-trigge
 3. After `AMBIENT_TIMEOUT_SEC` → fade-out, then `stop()`
 4. Second button press while playing → `stop()` immediately
 
-See [ambient.py](../firmware/pico_w/ambient.py) and `config.AMBIENT_*` for behavior configuration.
+See [ambient.py](../firmware/ambient.py) and `config.AMBIENT_*` for behavior configuration.
 
 ---
 

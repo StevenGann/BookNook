@@ -114,7 +114,7 @@ class Neopixel:
             self.dma = rp2.DMA()
             # The TX Data Request index for PIO is the (pio << 3) + state_machine
             # where state_machine is the sm number FOR THAT PIO. e.g. PIO1, SM1 is 0x8 + 0x1 = 0x9
-            # (See the System DREQ table in the RP2040 or RP2350 datasheet.)
+            # (See the System DREQ table in the RP2040 datasheet.)
             # However the micropython rp2 library does not allow selection of PIO and SM separately.
             # Instead, it counts state machines from 0 to however many there are total.
             # e.g. PIO1, SM1 is rp2 state machine 5.
