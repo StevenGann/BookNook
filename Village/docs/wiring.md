@@ -13,8 +13,8 @@ This page lists **which GPIO pin on each MCU** connects to what. Use the same nu
 | **GP5** | I2C SCL (master) | I2C bus SCL → **RP2350-Zero GP5** on every Zero; add 2.2–4.7 kΩ pull-up to 3.3 V |
 | **3V3** | 3.3 V | Shared 3.3 V rail (optional for Zeros if USB-powered) |
 | **GND** | Ground | Common GND with all RP2350-Zero and I2C bus |
-| **GP8** | UART1 TX (MP3) | MP3-TF-16P RX |
-| **GP9** | UART1 RX (MP3) | MP3-TF-16P TX |
+| **GP8** | UART1 TX (MP3) | MP3 pin 2 (RX) |
+| **GP9** | UART1 RX (MP3) | MP3 pin 3 (TX) |
 | **GP10** | Button | Momentary switch (other side → GND) |
 
 **Do not use:** GP23, GP24, GP25 (onboard WiFi).
@@ -63,9 +63,9 @@ Config names: `SPI_SCK`, `SPI_MOSI`, `LCD_CS`, `LCD_DC`, `LCD_RST`, `LCD_BL`. Ma
 | Pico W **GP4** | All RP2350-Zero **GP4** (SDA) + pull-up to 3.3 V |
 | Pico W **GP5** | All RP2350-Zero **GP5** (SCL) + pull-up to 3.3 V |
 | Pico W **GND** | All RP2350-Zero **GND** |
-| Pico W **GP8** | MP3-TF-16P RX (optional 1K series if buzzing) |
-| Pico W **GP9** | MP3-TF-16P TX |
-| Pico W **GND** | MP3-TF-16P GND (use both GND pins on module) |
+| Pico W **GP8** | MP3 pin 2 (RX); optional 1K in series if buzzing |
+| Pico W **GP9** | MP3 pin 3 (TX) |
+| Pico W **GND** | MP3 pins 7 and 10 (GND) |
 | Pico W **GP10** | Button one leg |
 | Button other leg | GND |
 | Each Zero **GP2** | That Zero’s ST7789V SCK |
@@ -92,12 +92,35 @@ Config names: `SPI_SCK`, `SPI_MOSI`, `LCD_CS`, `LCD_DC`, `LCD_RST`, `LCD_BL`. Ma
 
 ## MP3-TF-16P v3.0 / DFPlayer Mini
 
-- **UART:** 9600 baud, 8N1. Pico W **GP8** (TX) → MP3 **RX**, Pico W **GP9** (RX) → MP3 **TX**.
-- **GND:** Connect both GND pins on the MP3 module to common ground.
-- **Power:** 3.2–5 V. If using 5 V supply, level-shift UART lines if needed (module is often 5 V tolerant).
-- **Optional:** 1K resistor in series on TX/RX lines if you hear buzzing.
-- **SD card:** FAT16 or FAT32, max 32 GB. Use FAT32 for cards >2 GB; exFAT not supported. Audio: MP3, WAV, WMA. Create `mp3/` for 0001.mp3 … or folders `01/`, `02/`, … for folder playback. See [mp3_player.md](mp3_player.md) for format and layout details.
-- **Ambient clips:** Put ambient sounds in `mp3/` as `0001.mp3`, `0002.mp3`, … (or at SD root). `random_all()` plays all files the module sees in random order. For predictable behavior, use a dedicated SD or only ambient files.
+### Module pinout (16 pins, left to right)
+
+| Pin | Name | Connect to |
+|-----|------|------------|
+| 1 | VCC | 3.3 V or 5 V |
+| 2 | RX | Pico W **GP8** (UART1 TX) |
+| 3 | TX | Pico W **GP9** (UART1 RX) |
+| 4 | DAC_R | Amp/speaker (audio right) |
+| 5 | DAC_L | Amp/speaker (audio left) |
+| 6 | SPK2 | Speaker − (or use DAC) |
+| 7 | GND | Common GND |
+| 8 | SPK1 | Speaker + (or use DAC) |
+| 9 | IO1 | (optional I/O) |
+| 10 | GND | Common GND |
+| 11–16 | IO2, ADKEY1, ADKEY2, USB, BUSY | (optional) |
+
+### Pico W ↔ MP3 connections
+
+| From | To |
+|------|-----|
+| Pico W **GP8** | MP3 pin 2 (RX) |
+| Pico W **GP9** | MP3 pin 3 (TX) |
+| Pico W **GND** | MP3 pins 7 and 10 (GND) |
+| 3V3 or 5V | MP3 pin 1 (VCC) |
+
+- **UART:** 9600 baud, 8N1. Optional 1K resistor in series on GP8→RX if buzzing.
+- **Power:** 3.2–5 V. Level-shift UART if using 5 V (module is often 5 V tolerant).
+- **SD card:** FAT16 or FAT32, max 32 GB. Audio: MP3, WAV, WMA. See [mp3_player.md](mp3_player.md) for format and layout.
+- **Ambient clips:** Put in `mp3/` or SD root. `random_all()` plays all files in random order.
 
 ---
 

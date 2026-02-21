@@ -15,17 +15,44 @@ Both use the same pinout and command set. The MP3-TF-16P v3.0 requires at least 
 
 ---
 
-## Hardware Wiring
+## Module Pinout (MP3-TF-16P / DFPlayer Mini)
 
-| Pico W GPIO | Function | Connects to |
-|-------------|----------|-------------|
-| **GP8** | UART1 TX | MP3 module RX |
-| **GP9** | UART1 RX | MP3 module TX |
-| **GND** | Ground | Both MP3 GND pins |
+The module has 16 pins (numbered left to right when viewing the component side, SD slot facing you):
+
+| Pin | Name | Description |
+|-----|------|-------------|
+| 1 | VCC | Power input (3.2–5.0 V) |
+| 2 | RX | UART serial input (receives commands) |
+| 3 | TX | UART serial output (sends responses) |
+| 4 | DAC_R | Audio output, right channel |
+| 5 | DAC_L | Audio output, left channel |
+| 6 | SPK2 | Speaker negative (< 3 W) |
+| 7 | GND | Ground |
+| 8 | SPK1 | Speaker positive (< 3 W) |
+| 9 | IO1 | I/O trigger port 1 (optional) |
+| 10 | GND | Ground |
+| 11 | IO2 | I/O trigger port 2 (optional) |
+| 12 | ADKEY1 | AD key port 1 (optional) |
+| 13 | ADKEY2 | AD key port 2 (optional) |
+| 14 | USB+ | USB D+ (when using USB stick) |
+| 15 | USB- | USB D- (when using USB stick) |
+| 16 | BUSY | Status output: LOW = playing, HIGH = idle |
+
+---
+
+## Connection to Pico W
+
+| Pico W GPIO | Pico W function | MP3 module pin | MP3 pin name |
+|-------------|-----------------|----------------|--------------|
+| **GP8** | UART1 TX | 2 | RX |
+| **GP9** | UART1 RX | 3 | TX |
+| **GND** | Ground | 7 and 10 | GND |
+| 3V3 or 5V | Power | 1 | VCC |
 
 - **Baud rate:** 9600, 8N1
-- **Optional:** 1K resistor in series on TX/RX if you hear buzzing
-- **Power:** Module runs on 3.2–5 V; ensure common ground with Pico W
+- **Optional:** 1K resistor in series between Pico W GP8 and MP3 pin 2 (RX) if you hear buzzing
+- **Power:** Connect VCC (pin 1) to 3.3 V or 5 V; ensure common ground with Pico W
+- **Audio:** Connect DAC_L (5) and DAC_R (4) to amplifier/speaker, or SPK1 (8) and SPK2 (6) for direct speaker (< 3 W)
 
 See [wiring.md](wiring.md) for full pin assignments.
 
