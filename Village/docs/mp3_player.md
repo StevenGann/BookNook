@@ -13,6 +13,8 @@ The `dfplayer` module drives the MP3 player via UART using the standard 0x7E ser
 
 Both use the same pinout and command set. The MP3-TF-16P v3.0 requires at least 100 ms between commands; `MP3_CMD_DELAY_MS` enforces this automatically.
 
+For more on the differences between DFPlayer Mini and MP3-TF-16P v3.0, see [Digital Town: DFmini player & MP3-TF-16P v3.0](https://www.digitaltown.co.uk/components17dfminiplayer.php).
+
 ---
 
 ## Module Pinout (MP3-TF-16P / DFPlayer Mini)
