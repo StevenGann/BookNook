@@ -11,6 +11,7 @@ State diagram:
     FADE_OUT → IDLE (when fade completes)
 
 Config (in config.py):
+    AMBIENT_TRACK_COUNT: Number of tracks at SD root (for random selection; random_all does not work on MP3-TF-16P)
     AMBIENT_TIMEOUT_SEC: Playback duration before auto fade-out (default 10)
     AMBIENT_FADE_IN_MS: Duration of fade-in in ms (default 500)
     AMBIENT_FADE_OUT_MS: Duration of fade-out in ms (default 500)
@@ -30,6 +31,7 @@ Usage:
 
 import config
 import time
+import urandom
 import dfplayer
 import button
 
@@ -56,13 +58,21 @@ def init():
     card and initializes the button module for press detection.
     """
     dfplayer.select_source(dfplayer.SOURCE_SD)
+    time.sleep_ms(500)  # let module settle after source switch
     button.init()
+
+
+def _pick_random_track():
+    n = max(1, _cfg("AMBIENT_TRACK_COUNT", 7))
+    return (urandom.getrandbits(8) % n) + 1
 
 
 def _start_fade_in():
     global _state, _fade_step, _fade_last_ms
     dfplayer.set_volume(0)
-    dfplayer.random_all()
+    time.sleep_ms(200)  # MP3-TF-16P needs delay between volume and playback cmds (manual 3.3.2)
+    # random_all() does not work on MP3-TF-16P; use play_track with random selection + track-finished
+    dfplayer.play_track(_pick_random_track())
     _state = _FADE_IN
     _fade_step = 0
     _fade_last_ms = time.ticks_ms()
@@ -128,6 +138,9 @@ def update():
         if bp:
             _do_immediate_stop()
             return
+        if dfplayer.poll_track_finished():
+            time.sleep_ms(150)
+            dfplayer.play_track(_pick_random_track())
         _step_fade_in()
         return
 
@@ -135,6 +148,9 @@ def update():
         if bp:
             _do_immediate_stop()
             return
+        if dfplayer.poll_track_finished():
+            time.sleep_ms(150)
+            dfplayer.play_track(_pick_random_track())
         elapsed_sec = time.ticks_diff(time.ticks_ms(), _play_start) // 1000
         if elapsed_sec >= _cfg("AMBIENT_TIMEOUT_SEC", 10):
             _state = _FADE_OUT

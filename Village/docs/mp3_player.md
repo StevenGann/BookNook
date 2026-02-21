@@ -69,6 +69,7 @@ MP3_TX_PIN = 8    # Pico W UART1 TX → MP3 RX
 MP3_RX_PIN = 9    # Pico W UART1 RX ← MP3 TX
 MP3_BAUD = 9600
 MP3_CMD_DELAY_MS = 120   # Minimum ms between commands (MP3-TF-16P needs ~100)
+MP3_INIT_DELAY_MS = 3500 # Wait for SD scan before playback; required for MP3-TF-16P
 MP3_DEFAULT_VOLUME = 20  # 0–30
 ```
 
@@ -235,6 +236,8 @@ The MP3-TF-16P v3.0 has a smaller command buffer than the DFPlayer Mini. Sending
 | No sound | Check wiring; verify SD card inserted and formatted FAT16/FAT32; confirm source with `select_source(dfplayer.SOURCE_SD)` |
 | Buzzing or distortion | Add 1K resistor in series on TX and/or RX |
 | Commands ignored | Increase `MP3_CMD_DELAY_MS`; ensure 100+ ms between commands |
+| Volume works but play/stop does not | Module may still be scanning SD. Use reset + 2 s wait in init; add 200 ms between volume and playback commands. See [Digital Town](https://www.digitaltown.co.uk/components17dfminiplayer.php). |
+| `random_all()` has no effect | MP3-TF-16P does not support this command. Use `play_track(n)` with `poll_track_finished()` to advance to the next random track. |
 | Wrong track plays | Verify SD file layout (mp3/ vs root vs folders) |
 | Module unresponsive | Power cycle; try `reset()` and wait 2 s |
 

@@ -23,7 +23,7 @@ MicroPython code for the gateway: WiFi, MQTT, SK6812 LEDs, I2C master to LCD con
 
 - `LCD_I2C_ADDRESSES`: list of RP2350-Zero addresses in index order (e.g. `[0x20, 0x21, 0x22]`). Length = number of LCDs.
 - `LED_COUNT`, `LED_DATA_PIN`, `LED_ORDER`: match your SK6812 strip.
-- `BUTTON_PIN`, `AMBIENT_TIMEOUT_SEC`, `AMBIENT_FADE_IN_MS`, `AMBIENT_FADE_OUT_MS`, `AMBIENT_VOLUME`: ambient audio behavior.
+- `BUTTON_PIN`, `AMBIENT_TRACK_COUNT`, `AMBIENT_TIMEOUT_SEC`, `AMBIENT_FADE_IN_MS`, `AMBIENT_FADE_OUT_MS`, `AMBIENT_VOLUME`: ambient audio behavior.
 
 ## Run
 

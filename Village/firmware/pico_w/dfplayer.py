@@ -107,18 +107,17 @@ def _send_command(cmd, param=0, param_high=None, param_low=None):
 def init():
     """Initialize UART1 for communication with the MP3 module.
 
-    Uses config.MP3_TX_PIN, MP3_RX_PIN, MP3_BAUD. Waits 500 ms for module
-    stabilization before returning. Call before any other dfplayer functions.
-
-    Returns:
-        The UART object.
+    Opens UART, waits 500 ms, sends reset, waits 2 s for module to restart and
+    scan SD. Call select_source(SOURCE_SD) after init (e.g. from ambient.init).
     """
     global _uart
     tx = getattr(config, "MP3_TX_PIN", 8)
     rx = getattr(config, "MP3_RX_PIN", 9)
     baud = getattr(config, "MP3_BAUD", 9600)
     _uart = UART(1, baudrate=baud, tx=Pin(tx), rx=Pin(rx))
-    time.sleep_ms(500)  # let module stabilize
+    time.sleep_ms(500)
+    reset()
+    time.sleep_ms(2000)
     return _uart
 
 
@@ -274,6 +273,39 @@ def output_setting(enable, gain=15):
     dh = 1 if enable else 0
     dl = min(31, max(0, gain))
     _send_command(CMD_OUTPUT_SETTING, 0, dh, dl)
+
+
+# Response: track finished (0x3C or 0x3D)
+_RX_BUF = bytearray(10)
+_RX_IDX = 0
+
+
+def poll_track_finished():
+    """Non-blocking: return True if a track-finished (0x3C/0x3D) response was received.
+    Use with play_track() for random/sequential playback; random_all() does not work on MP3-TF-16P."""
+    global _uart, _RX_IDX
+    if _uart is None:
+        return False
+    while _uart.any():
+        b = _uart.read(1)
+        if b is None:
+            break
+        _RX_BUF[_RX_IDX] = b[0]
+        if _RX_IDX == 0:
+            if b[0] != _START:
+                continue
+        _RX_IDX += 1
+        if _RX_IDX >= 10:
+            _RX_IDX = 0
+            if _RX_BUF[9] != _END:
+                continue
+            checksum = -(_RX_BUF[1] + _RX_BUF[2] + _RX_BUF[3] + _RX_BUF[4] + _RX_BUF[5] + _RX_BUF[6])
+            if (_RX_BUF[7] << 8 | _RX_BUF[8]) != (checksum & 0xFFFF):
+                continue
+            cmd = _RX_BUF[3]
+            if cmd in (0x3C, 0x3D):
+                return True
+    return False
 
 
 # ---- Query commands (require reading serial response) ----
